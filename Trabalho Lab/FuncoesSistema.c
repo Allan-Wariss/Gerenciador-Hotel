@@ -11,6 +11,7 @@ void quantidade(){
     fclose(QuartoQTD);
 }
 
+
 void criando_quarto(){
     quantidade();
     quar_qtd += 1;
@@ -28,6 +29,9 @@ void criando_quarto(){
     FILE * Quarto = fopen(quarto, "w");
     fclose(Quarto);
 }
+
+
+
 
 void Registrar_quartos(int qnt){
     quantidade();
@@ -52,12 +56,6 @@ void cad_User() {
     printf("Nome: ");
     scanf("%s", nome);
 
-    printf("CPF: ");
-    scanf("%s", cpf);
-
-    printf("Email: ");
-    scanf("%s", email);
-
     printf("Senha: ");
     scanf("%s", senha);
 
@@ -67,38 +65,65 @@ void cad_User() {
     char caminho_senha[100];
 
     sprintf(caminho_nome, "cadUsers/nome.txt", nome);
-    sprintf(caminho_cpf, "cadUsers/cpf.txt", cpf);
-    sprintf(caminho_email, "cadUsers/email.txt", email);
     sprintf(caminho_senha, "cadUsers/senha.txt", senha);
 
     // Abrir os arquivos para escrita
     FILE* arquivo_nome = fopen(caminho_nome, "a");
-    FILE* arquivo_cpf = fopen(caminho_cpf, "a");
-    FILE* arquivo_email = fopen(caminho_email, "a");
     FILE* arquivo_senha = fopen(caminho_senha, "a");
 
     // Verificar se os arquivos foram abertos corretamente
-    if (arquivo_nome == NULL || arquivo_cpf == NULL || arquivo_email == NULL || arquivo_senha == NULL) {
+    if (arquivo_nome == NULL || arquivo_senha == NULL) {
         printf("Erro ao abrir os arquivos.\n");
         return;
     }
 
     // Escrever os dados nos arquivos
     fprintf(arquivo_nome, "%s\n", nome);
-    fprintf(arquivo_cpf, "%s\n", cpf);
-    fprintf(arquivo_email, "%s\n", email);
     fprintf(arquivo_senha, "%s\n", senha);
 
     // Fechar os arquivos
     fclose(arquivo_nome);
-    fclose(arquivo_cpf);
-    fclose(arquivo_email);
     fclose(arquivo_senha);
 
     printf("Cadastro realizado com sucesso!\n");
 }
 // ---------------------------------------------------------------
 
+// Função para verificar registro de cadastro dos usuários
+int verificarLoginUser(const char* nome, const char* senha){
+    FILE* arquivo_nome = fopen("cadUsers/nome.txt", "r");
+    FILE* arquivo_senha = fopen("cadUsers/senha.txt", "r");
+
+    if (arquivo_nome == NULL || arquivo_senha == NULL) {
+        printf("Erro ao abrir os arquivos.\n");
+        return 0;
+    }
+
+    char linha_nome[50];
+    char linha_senha[20];
+
+    int linha = 1;
+    for (linha = 1; fgets(linha_nome, sizeof(linha_nome), arquivo_nome) != NULL
+     && fgets(linha_senha, sizeof(linha_senha), arquivo_senha) != NULL; linha++) {
+        linha_nome[strcspn(linha_nome, "\n")] = '\0';
+        linha_senha[strcspn(linha_senha, "\n")] = '\0';
+
+        if (strcmp(linha_nome, nome) == 0 && strcmp(linha_senha, senha) == 0) {
+            printf("Usuário logado com sucesso!\n");
+            fclose(arquivo_nome);
+            fclose(arquivo_senha);
+            return 1;
+        }
+    }
+
+    fclose(arquivo_nome);
+    fclose(arquivo_senha);
+
+    printf("Nome de usuário ou senha incorretos.\n");
+    return 0;
+
+}
+// ---------------------------------------------------------------
 int main(){
     int escolha;
 
@@ -128,5 +153,16 @@ int main(){
     }while(escolha != 0);
 
     Registrar_quartos(5);
+
+    char nome[50];
+    char senha[20];
+
+    printf("Digite o nome: ");
+    scanf("%s", nome);
+
+    printf("Digite a senha: ");
+    scanf("%s", senha);
+    verificarLoginUser(nome, senha);
+
     return 0;
 }
