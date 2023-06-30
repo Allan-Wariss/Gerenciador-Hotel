@@ -97,6 +97,8 @@ void cad_User() {
 
     printf("Cadastro realizado com sucesso!\n");
 }
+// ---------------------------------------------------------------
+
 int main(){
     int escolha;
 
