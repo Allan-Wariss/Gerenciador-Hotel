@@ -41,7 +41,6 @@ void Registrar_quartos(int qnt){
     printf("%d\n", quar_qtd);
 }
 //-----------------------------------------------
-
 // Função para cadastrar um usuário
 void cad_User() {
     char nome[100];
