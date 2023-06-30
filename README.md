@@ -2,6 +2,6 @@
 Trabalho de Laboratório em C da Universidade Federal do Ceará
 
 Desenvolvido por:
-Allan Wariss
-Kelve Moreira
-Guilherme Messias
+<br>Allan Wariss
+<br>Kelve Moreira
+<br>Guilherme Messias
