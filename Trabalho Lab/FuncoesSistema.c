@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 
 // Funções de REGISTRAR QUARTOS
 int quar_qtd;
+char *user_atual;
+bool logado = false;
 void quantidade(){
     FILE * QuartoQTD = fopen("quartos/quartoQTD.txt", "r");
     fscanf(QuartoQTD, "%d", &quar_qtd);
@@ -29,8 +32,6 @@ void criando_quarto(){
     FILE * Quarto = fopen(quarto, "w");
     fclose(Quarto);
 }
-
-
 
 
 void Registrar_quartos(int qnt){
@@ -109,9 +110,12 @@ int verificarLoginUser(const char* nome, const char* senha){
         linha_senha[strcspn(linha_senha, "\n")] = '\0';
 
         if (strcmp(linha_nome, nome) == 0 && strcmp(linha_senha, senha) == 0) {
-            printf("Usuário logado com sucesso!\n");
+            printf("Usuario logado com sucesso!\n");
+            user_atual = nome;
+            logado = true;
             fclose(arquivo_nome);
             fclose(arquivo_senha);
+            printf("\nBem-vindo %s\n",user_atual);
             return 1;
         }
     }
@@ -119,50 +123,89 @@ int verificarLoginUser(const char* nome, const char* senha){
     fclose(arquivo_nome);
     fclose(arquivo_senha);
 
-    printf("Nome de usuário ou senha incorretos.\n");
+    printf("\nNome de usuario ou senha incorretos.\n");
     return 0;
 
 }
 // ---------------------------------------------------------------
+
+
 int main(){
     int escolha;
-
-    do{
-        printf("1. Cadastrar novo usuário\n");
-        printf("2. Exibir usuários cadastrados\n");
-        printf("3. Buscar usuário\n");
-        printf("4. Excluir usuário\n");
-        printf("0. Sair\n");
-        printf("Escolha uma opção: ");
-        scanf("%d", &escolha);
-
-        switch(escolha){
-            case 1:
-                cad_User();
-                break;
-            
-            case 0:
-                printf("Saindo do sistema...\n");
-                break;
-            default:
-                printf("Opção invalida!\n");
-                break;
-        }
-        printf("\n");
-
-    }while(escolha != 0);
-
-    Registrar_quartos(5);
-
+    int quantidade;
     char nome[50];
     char senha[20];
 
-    printf("Digite o nome: ");
-    scanf("%s", nome);
+//Tela de login
+    do{
+        printf("1. Logar\n");
+        printf("2. Registrar usuario\n");
+        printf("0. Sair\n");
+        printf("Escolha: ");
+        scanf("%d",&escolha);
+        printf("\n");
+                        
+        switch (escolha)
+        {
+                        
+            case 1:
+                printf("Digite o nome: ");
+                scanf("%s", nome);
+                printf("Digite a senha: ");
+                scanf("%s", senha);
+                verificarLoginUser(nome, senha);
+                escolha = 0;
+                break;
+            case 2:
+                cad_User();
+            
+            case 0:
+                printf("Saindo do sistema...\n");
+                
+            default:
+                break;
+        }
+                
+    }while (escolha !=0);
 
-    printf("Digite a senha: ");
-    scanf("%s", senha);
-    verificarLoginUser(nome, senha);
+escolha = 100; //Resetar valor de escolha e não dar conflito no proximo loop
+    
 
+    //Tela do sistema
+    if(logado == true){
+        do{
+            printf("1. Cadastrar novo Quarto\n");
+            printf("2. Exibir usuarios cadastrados\n");
+            printf("3. Exibir quartos cadastrados\n");
+            printf("4. ChekIn\n");
+            printf("5. ChekOut\n");
+            printf("6. LOGAR\n");
+            printf("0. Sair\n");
+            printf("Escolha uma opcao: ");
+            scanf("%d", &escolha);
+
+            switch(escolha){
+                
+                case 2:
+                    printf("Quantos quartos deseja Registrar?: ");
+                    scanf("%d",&quantidade);
+                    printf("\n");
+
+                    Registrar_quartos(quantidade);
+                case 0:
+                    printf("Saindo do sistema...\n");
+                    break;
+                default:
+                    printf("Opcao invalida!\n");
+                    break;
+            }
+            printf("\n");
+
+        }while(escolha != 0);   
+    }
+    else{
+        printf("\nErro ao entrar no SISTEMA\n");
+    }
+    
     return 0;
 }
