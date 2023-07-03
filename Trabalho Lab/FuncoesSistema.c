@@ -172,7 +172,7 @@ escolha = 100; //Resetar valor de escolha e não dar conflito no proximo loop
     
 
     //Tela do sistema
-    if(logado == true){
+    if(logado){
         do{
             printf("1. Cadastrar novo Quarto\n");
             printf("2. Exibir usuarios cadastrados\n");
@@ -186,7 +186,7 @@ escolha = 100; //Resetar valor de escolha e não dar conflito no proximo loop
 
             switch(escolha){
                 
-                case 2:
+                case 1:
                     printf("Quantos quartos deseja Registrar?: ");
                     scanf("%d",&quantidade);
                     printf("\n");
