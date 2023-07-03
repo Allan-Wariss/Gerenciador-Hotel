@@ -129,10 +129,67 @@ int verificarLoginUser(const char* nome, const char* senha){
 }
 // ---------------------------------------------------------------
 
+// Função Check IN
+    void CheckIn(int numQuarto) {
+    // Abre o arquivo correspondente ao quarto escolhido
+    char fileName[20];
+    sprintf(fileName, "quartos/quarto%d.txt", numQuarto);
+    FILE *file = fopen(fileName, "w");
+    
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo do quarto %d.\n", numQuarto);
+        return;
+    }
+    
+    // Solicita o nome da pessoa atualmente logada
+    char nome[50];
+    printf("Digite o nome da pessoa atualmente logada: ");
+    scanf("%s", nome);
+    
+    // Escreve o nome no arquivo do quarto
+    fprintf(file, "%s", nome);
+    
+    // Fecha o arquivo
+    fclose(file);
+    
+    printf("Check-in realizado com sucesso no quarto %d.\n", numQuarto);
+}
+// ---------------------------------------------------------------
+
+// Função Check Out
+    void CheckOut(int numQuarto) {
+    // Abre o arquivo correspondente ao quarto escolhido
+    char fileName[20];
+    sprintf(fileName, "quartos/quarto%d.txt", numQuarto);
+    FILE *file = fopen(fileName, "w");
+    
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo do quarto %d.\n", numQuarto);
+        return;
+    }
+    
+    // Remove o conteúdo do arquivo
+    fclose(file);
+    file = fopen(fileName, "w");
+    
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo do quarto %d.\n", numQuarto);
+        return;
+    }
+    
+    printf("Check-out realizado com sucesso no quarto %d.\n", numQuarto);
+    
+    // Fecha o arquivo
+    fclose(file);
+}
+// ---------------------------------------------------------------
+
+
 
 int main(){
     int escolha;
     int quantidade;
+    int numQuarto;
     char nome[50];
     char senha[20];
 
@@ -175,10 +232,10 @@ escolha = 100; //Resetar valor de escolha e não dar conflito no proximo loop
     if(logado){
         do{
             printf("1. Cadastrar novo Quarto\n");
-            printf("2. Exibir usuarios cadastrados\n");
-            printf("3. Exibir quartos cadastrados\n");
-            printf("4. ChekIn\n");
-            printf("5. ChekOut\n");
+            printf("2. Check-In\n");
+            printf("3. Check-out\n");
+            printf("4. Exibir quartos cadastrados\n");
+            printf("5. Exibir usuarios cadastrados\n");
             printf("6. LOGAR\n");
             printf("0. Sair\n");
             printf("Escolha uma opcao: ");
@@ -192,6 +249,17 @@ escolha = 100; //Resetar valor de escolha e não dar conflito no proximo loop
                     printf("\n");
 
                     Registrar_quartos(quantidade);
+
+                case 2:
+                    printf("Escolha o número de um quarto para realizar o Check-in: ");
+                    scanf("%d", &numQuarto);
+                    CheckIn(numQuarto);
+                case 3:
+                    printf("Escolha o número do seu quarto para realizar o Check-out: ");
+                    scanf("%d", &numQuarto);
+                    CheckOut(numQuarto);
+    
+
                 case 0:
                     printf("Saindo do sistema...\n");
                     break;
