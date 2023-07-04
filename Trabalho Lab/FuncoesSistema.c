@@ -181,7 +181,7 @@ int verificarLoginUser(const char* nome, const char* senha){
 
 // Verificar quartos disponiveis
 void verificar_quartos() {
-    const char *arquivos[5] = {"quarto1.txt", "quarto2.txt", "quarto3.txt", "quarto4.txt", "quarto5.txt"};
+    const char *arquivos[5] = {"quartos/quarto1.txt", "quartos/quarto2.txt", "quartos/quarto3.txt", "quartos/quarto4.txt", "quartos/quarto5.txt"};
 
     for (int i = 0; i < 5; i++) {
         FILE *file = fopen(arquivos[i], "r");
